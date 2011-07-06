@@ -1166,7 +1166,11 @@
 			var urls = [];
 			
 			$( this ).find( "a:jqmData(prefetch)" ).each(function(){
-				var url = path.makePathAbsolute( $( this ).attr( "href" ), path.get() );
+				var $link = $( this ),
+					baseUrl = getClosestBaseUrl( $link ),
+					//get href, if defined, otherwise default to empty hash
+					url = path.makeUrlAbsolute( $link.attr( "href" ) || "#", baseUrl );
+					
 				if( url && url !== "#" && $.inArray( url, urls ) === -1 ){
 					urls.push( url );
 				}
