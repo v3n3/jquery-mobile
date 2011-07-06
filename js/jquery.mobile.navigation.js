@@ -1161,6 +1161,23 @@
 			}
 		});
 		
+		//prefetch pages when anchors with data-prefetch are encountered
+		$( ".ui-page" ).live( "pagecreate", function(){
+			var urls = [];
+			
+			$( this ).find( "a:jqmData(prefetch)" ).each(function(){
+				var url = path.makePathAbsolute( $( this ).attr( "href" ), path.get() );
+				if( url && url !== "#" && $.inArray( url, urls ) === -1 ){
+					urls.push( url );
+				}
+			});
+									
+			for( var i = 0, urlL = urls.length; i < urlL; i++ ){
+				$.mobile.loadPage( urls[i] );
+			}
+			
+		} );
+		
 		//set page min-heights to be device specific
 		$( document ).bind( "pageshow", resetActivePageHeight );
 		$( window ).bind( "throttledresize", resetActivePageHeight );
